@@ -1,0 +1,26 @@
+class Solution 
+{
+public:
+    unordered_map<int,int> inorderMap_; // 中序遍历表 节点-索引
+    // 前序遍历 中序遍历 前序遍历左边界 右边界 中序遍历左边界 中序遍历右边界
+    TreeNode* helper(vector<int>& preorder, vector<int>& inorder, int nLeftPre, int nRightPre, int nLeftIn, int nRightIn)
+    {
+        if(nLeftPre > nRightPre) return nullptr; // 已经没有根节点了
+        auto root = new TreeNode(preorder[nLeftPre]); // 构造根节点
+        int leftCount = inorderMap_[root->val] - nLeftIn; // 左子树数量
+        int inordIndex = inorderMap_[root->val] - 1;//递归左子树时中序遍历右边界
+        root->left = helper(preorder, inorder, nLeftPre+1, nLeftPre+leftCount, nLeftIn, inordIndex);
+        root->right = helper(preorder, inorder, nLeftPre+leftCount+1, nRightPre, inordIndex+2, nRightIn);
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) 
+    {
+        int nSize = inorder.size();
+        for(int i=0; i<nSize; ++i)
+        {
+            inorderMap_[inorder[i]] = i; 
+        }
+        return helper(preorder,inorder,0,nSize - 1,0, nSize - 1);
+    }
+    
+};

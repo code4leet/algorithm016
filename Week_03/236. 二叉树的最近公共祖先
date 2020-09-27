@@ -1,0 +1,14 @@
+class Solution {
+public:
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+    {
+        if(!root) return nullptr;
+        if(p==q) return p; // 同节点的情况
+        if(root == p || root == q) return root; // 找到其中一个节点返回。另一个节点在该节点的子树上也是正确结果
+        TreeNode* l = lowestCommonAncestor(root->left, p, q);  // 查找左子树
+        TreeNode* r = lowestCommonAncestor(root->right, p, q); // 查找右子树
+        if(!l) return r; // 左子树未找到，返回右子树的结果，返回值可以为nullptr，可以是找到了其中一个点，也可以是最近公共节点
+        if(!r) return l; // 右子树未找到，返回左子树的结果，返回值可以是找到了其中一个点，也可以是最近公共节点
+        return root; // 左右子树均找到了对应节点，本节点为最近的公共节点，向上层返回
+    }
+};

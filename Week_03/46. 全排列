@@ -1,0 +1,25 @@
+class Solution {
+public:
+//回溯法:按选优条件向前搜索,当探索到某一步时，发现原先选择并不优或达不到目标，就退回一步重新选择，而满足回溯条件的某个状态的点称为“回溯点”。
+    vector<vector<int>> ans;
+    void backtrack(vector<int>& nums, int index, int size)
+    {
+        if(index == size)
+        {
+            ans.push_back(nums);
+            return;
+        }
+        for(int i=index; i<size; ++i)
+        {
+            swap(nums[i], nums[index]); // 让所有数字都可以出现在此位置
+            backtrack(nums, index+1, size);
+            swap(nums[i], nums[index]); // 还原数字进行下一次迭代
+        }
+        return;
+    }
+    vector<vector<int>> permute(vector<int>& nums) 
+    {
+        backtrack(nums, 0, nums.size());
+        return ans;
+    }
+};
